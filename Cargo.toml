@@ -1,0 +1,7 @@
+[package]
+name = "ts1-game-2048-rust"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy = "0.13.2"
