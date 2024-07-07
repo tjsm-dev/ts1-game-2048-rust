@@ -1,9 +1,9 @@
 use bevy::prelude::*;
 
-use crate::entity::TileState;
+use crate::entity::defines::TileState;
 
 
-#[derive(Component)]
+#[derive(Component, Debug, Clone, PartialEq)]
 pub struct Tile {
     pub value: u32,
     pub position_x: i32,
