@@ -5,14 +5,14 @@ use crate::entity::defines::TileState;
 
 #[derive(Component, Debug, Clone, PartialEq)]
 pub struct Tile {
-    pub value: u32,
-    pub position_x: i32,
-    pub position_y: i32,
+    pub value: u16,
+    pub position_x: u8,
+    pub position_y: u8,
     pub state: TileState,
 }
 
 impl Tile {
-    pub fn new(value: u32, position_x: i32, position_y: i32) -> Self {
+    pub fn new(value: u16, position_x: u8, position_y: u8) -> Self {
         Tile {
             value,
             position_x,
@@ -21,7 +21,7 @@ impl Tile {
         }
     }
 
-    pub fn merge(&mut self, value: u32) {
+    pub fn merge(&mut self, value: u16) {
         self.value += value;
         self.state = TileState::Merged;
     }
