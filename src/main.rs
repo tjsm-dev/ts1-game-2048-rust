@@ -10,7 +10,7 @@ fn main() {
     .add_systems(Update,
         (
             system::handle_keyboard_input::handle_keyboard_input,
-            ui::main_menu::show_main_menu.after(
+            ui::show_menu::show_menu.after(
                 system::handle_keyboard_input::handle_keyboard_input),
         ),
     )

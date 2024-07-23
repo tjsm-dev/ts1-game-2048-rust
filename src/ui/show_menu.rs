@@ -1,9 +1,12 @@
-use bevy::prelude::EventReader;
+use bevy::prelude::*;
 
 use crate::system::events::{MenuType, ShowMenu};
 
 
-pub fn show_main_menu(mut events: EventReader<ShowMenu>) {
+pub fn show_menu(
+    mut commands: Commands,
+    mut events: EventReader<ShowMenu>
+) {
     for event in events.read() {
         match event.0 {
             MenuType::Main => {
