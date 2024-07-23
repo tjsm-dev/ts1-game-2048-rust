@@ -1,6 +1,6 @@
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
-use crate::system::events::{MenuType, ShowMenu};
+use crate::system::events::{StatusType, ChangeGameStatus};
 
 const MAIN_MENU_WIDTH: f32 = 200.;
 const MAIN_MENU_HEIGHT: f32 = 200.;
@@ -31,11 +31,11 @@ pub fn show_menu(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
-    mut events: EventReader<ShowMenu>
+    mut events: EventReader<ChangeGameStatus>
 ) {
     for event in events.read() {
         match event.0 {
-            MenuType::Main => {
+            StatusType::MainMenu => {
                 println!("Main Menu Selected!");
                 let mesh = Mesh::from(Rectangle::new(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
                 let material = ColorMaterial::from(Color::rgb(0., 1., 0.));
@@ -52,9 +52,10 @@ pub fn show_menu(
                     },
                 ));
             },
-            MenuType::Rank => {
+            StatusType::Rank => {
                 println!("Rank Menu Selected!")
             }
+            StatusType::Game => {}
         }
     }
 }
