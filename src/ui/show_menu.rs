@@ -9,24 +9,6 @@ pub const POP_UP_MENU_COLOR: Color = Color::rgb(1.0, 0.0, 0.0);
 #[derive(Component)]
 struct MainMenuHandle;
 
-#[derive(Component)]
-struct Position(Vec2);
-
-#[derive(Bundle)]
-struct MainMenuBundle {
-    handle: MainMenuHandle,
-    position: Position,
-}
-
-impl MainMenuBundle {
-    fn new(x: f32, y: f32) -> Self {
-        Self {
-            handle: MainMenuHandle,
-            position: Position(Vec2::new(x, y)),
-        }
-    }
-}
-
 pub fn show_menu(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
@@ -44,7 +26,7 @@ pub fn show_menu(
                 let material_handle = materials.add(material);
             
                 commands.spawn((
-                    MainMenuBundle::new(20., -25.),
+                    MainMenuHandle,
                     MaterialMesh2dBundle {
                         mesh: mesh_handle.into(),
                         material: material_handle,
@@ -73,7 +55,7 @@ fn spawn_main_menu(
     let material_handle = materials.add(material);
 
     commands.spawn((
-        MainMenuBundle::new(20., -25.),
+        MainMenuHandle,
         MaterialMesh2dBundle {
             mesh: mesh_handle.into(),
             material: material_handle,
