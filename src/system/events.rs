@@ -1,9 +1,10 @@
 use bevy::prelude::*;
 
-pub enum MenuType {
-    Main,
-    Rank
+pub enum StatusType {
+    MainMenu,
+    Rank,
+    Game,
 }
 
 #[derive(Event)]
-pub struct ShowMenu(pub MenuType);
+pub struct ChangeGameStatus(pub StatusType);
