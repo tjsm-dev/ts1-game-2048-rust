@@ -1,16 +1,19 @@
 use bevy::prelude::EventReader;
 
-use crate::system::events::{MenuType, ShowMenu};
+use crate::system::events::StatusType;
 
 
-pub fn show_main_menu(mut events: EventReader<ShowMenu>) {
+pub fn show_main_menu(mut events: EventReader<StatusType>) {
     for event in events.read() {
-        match event.0 {
-            MenuType::Main => {
+        match event {
+            StatusType::MainMenu => {
                 println!("Main Menu Selected!")
             },
-            MenuType::Rank => {
+            StatusType::Rank => {
                 println!("Rank Menu Selected!")
+            }
+            StatusType::Game => {
+                println!("Game Menu Selected!")
             }
         }
     }

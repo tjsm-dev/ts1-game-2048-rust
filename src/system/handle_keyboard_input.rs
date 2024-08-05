@@ -1,20 +1,23 @@
 use bevy::prelude::*;
 
-use super::events::{MenuType, ShowMenu};
+use super::events::{StatusType, ChangeGameStatus};
 
 pub fn handle_keyboard_input(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut events: EventWriter<ShowMenu>
+    mut events: EventWriter<ChangeGameStatus>
 ) {
-    if keyboard_input.pressed(KeyCode::ArrowUp) {
+    if keyboard_input.just_pressed(KeyCode::ArrowUp) {
         println!("Move Up");
-    } else if keyboard_input.pressed(KeyCode::ArrowDown) {
+
+    } else if keyboard_input.just_pressed(KeyCode::ArrowDown) {
         println!("Move Down");
-    } else if keyboard_input.pressed(KeyCode::ArrowLeft) {
+
+    } else if keyboard_input.just_pressed(KeyCode::ArrowLeft) {
         println!("Move Left");
-    } else if keyboard_input.pressed(KeyCode::ArrowRight) {
+
+    } else if keyboard_input.just_pressed(KeyCode::ArrowRight) {
         println!("Move Right");
-    } else if keyboard_input.pressed(KeyCode::Escape) {
-        events.send(ShowMenu(MenuType::Main));
+    } else if keyboard_input.just_pressed(KeyCode::Escape) {
+        events.send(ChangeGameStatus(StatusType::MainMenu));
     }
 }
