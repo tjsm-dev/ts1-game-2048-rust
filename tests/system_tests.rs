@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use ts1_game_2048_rust::system::handle_keyboard_input::handle_keyboard_input;
-use ts1_game_2048_rust::entity::defines::Direction;
+use ts1_game_2048_rust::common::direction::Direction;
 #[test]
 fn test_handle_keyboard_input_up() {
     let mut app = App::new();

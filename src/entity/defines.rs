@@ -1,3 +1,5 @@
+use bevy::prelude::*;
+
 pub const TILE_WIDTH: u8 = 4;
 pub const TILE_HEIGHT: u8 = 4;
 
@@ -8,11 +10,5 @@ pub enum TileState {
     Moved,
 }
 
-#[derive(Debug, PartialEq, Copy, Clone)]
-pub enum Direction {
-    Left,
-    Up,
-    Right,
-    Down,
-    None,
-}
+#[derive(Default, Resource, Deref, DerefMut)]
+pub struct Boards(pub Vec<Entity>);

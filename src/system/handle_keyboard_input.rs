@@ -1,10 +1,13 @@
 use bevy::prelude::*;
 
-use super::events::{StatusType, ChangeGameStatus};
+use crate::common::status_type::GameStatusType;
+use super::events::{ChangeGameStatus, MoveTiles};
+use crate::common::direction;
 
 pub fn handle_keyboard_input(
     keyboard_input: Res<ButtonInput<KeyCode>>,
-    mut events: EventWriter<ChangeGameStatus>
+    mut system_event: EventWriter<ChangeGameStatus>,
+    mut game_event: EventWriter<MoveTiles>
 ) {
     if keyboard_input.just_pressed(KeyCode::ArrowUp) {
         println!("Move Up");
@@ -18,6 +21,10 @@ pub fn handle_keyboard_input(
     } else if keyboard_input.just_pressed(KeyCode::ArrowRight) {
         println!("Move Right");
     } else if keyboard_input.just_pressed(KeyCode::Escape) {
-        events.send(ChangeGameStatus(StatusType::MainMenu));
+        system_event.send(ChangeGameStatus(GameStatusType::MainMenu));
+    } else if keyboard_input.just_pressed(KeyCode::KeyQ) {
+        game_event.send(MoveTiles {
+            direction: direction::Direction::Up,
+        });
     }
 }
