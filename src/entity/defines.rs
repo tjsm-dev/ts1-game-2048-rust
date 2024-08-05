@@ -1,3 +1,5 @@
+use bevy::prelude::*;
+
 pub const TILE_WIDTH: u8 = 4;
 pub const TILE_HEIGHT: u8 = 4;
 
@@ -7,3 +9,6 @@ pub enum TileState {
     Merged,
     Moved,
 }
+
+#[derive(Default, Resource, Deref, DerefMut)]
+pub struct Boards(pub Vec<Entity>);
