@@ -1,6 +1,7 @@
 use bevy::{
     prelude::{Commands, EventReader},
 };
+<<<<<<< Updated upstream
 
 use crate::system::events::{TextPopup, TextPopupEvent, ScoreBoardType, ShowScoreBoard};
 
@@ -46,3 +47,13 @@ fn spawn_text_popup(
 ) {
     let mut spawned_root = commands.spawn( TextPopup);
 }
+=======
+use bevy::render::color::Color;
+use bevy::text::JustifyText;
+use bevy::ui::UiRect;
+// use crate::system::events::{TextPopup, TextPopupEvent, ScoreBoardType, ShowScoreBoard, TextPopupExpires};
+
+use bevy::{prelude::*, render::camera::RenderTarget, window::WindowRef};
+
+use bevy::prelude::{TextSection, Window}; // Import necessary structs
+>>>>>>> Stashed changes
