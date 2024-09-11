@@ -40,8 +40,6 @@ pub fn show_menu(
                 ));
             },
             GameStatusType::Rank => {
-                println!("Rank Menu Selected!");
-
                 if let Ok(mut window) = query.get_mut(rank_window_id.0) {
                     window.visible = !window.visible;
                 }
@@ -52,26 +50,4 @@ pub fn show_menu(
             }
         }
     }
-}
-
-fn spawn_main_menu(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<ColorMaterial>>
-) {
-    println!("Main Menu Selected!");
-    let mesh = Mesh::from(Rectangle::new(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
-    let material = ColorMaterial::from(Color::rgb(0., 1., 0.));
-
-    let mesh_handle = meshes.add(mesh);
-    let material_handle = materials.add(material);
-
-    commands.spawn((
-        MainMenuHandle,
-        MaterialMesh2dBundle {
-            mesh: mesh_handle.into(),
-            material: material_handle,
-            ..default()
-        },
-    ));
 }
