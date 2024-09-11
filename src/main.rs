@@ -16,6 +16,7 @@ fn main() {
                 system::handle_keyboard_input::handle_keyboard_input,
                 ui::show_menu::show_menu.after(
                     system::handle_keyboard_input::handle_keyboard_input),
+                system::window_util::handle_window_close,
             ),
         )
         .run();
