@@ -6,8 +6,7 @@ use crate::common::{status_type::GameStatusType, direction::Direction};
 pub struct ChangeGameStatus(pub GameStatusType);
 
 
-#[derive(Debug, Event, Clone, Reflect)]
-#[reflect(Debug, Default)]
+#[derive(Debug, Event, Clone)]
 pub struct MoveTiles {
     pub direction: Direction,
 }
