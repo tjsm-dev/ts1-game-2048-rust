@@ -2,10 +2,10 @@ use bevy::render::camera::RenderTarget;
 use bevy::window::{EnabledButtons, WindowRef, WindowResolution};
 use bevy::prelude::*;
 
-pub fn spawn_camera(mut commands: Commands) {
-    // commands.spawn_empty().insert(Camera2dBundle::default());
+use super::resource::RankWindowId;
 
-    let first_window_camera = commands
+pub fn spawn_camera(mut commands: Commands) {
+    let _ = commands
         .spawn(Camera3dBundle {
             transform: Transform::from_xyz(0.0, 0.0, 6.0).looking_at(Vec3::ZERO, Vec3::Y),
             ..default()
@@ -17,11 +17,12 @@ pub fn spawn_camera(mut commands: Commands) {
             title: "Rank".to_owned(),
             enabled_buttons: EnabledButtons{ minimize: false, maximize: false, close: false },
             resolution: WindowResolution::new(600.0, 400.0),
+            visible: false,
             ..default()
         })
         .id();
 
-    let second_window_camera = commands
+    let _ = commands
         .spawn(Camera3dBundle {
             transform: Transform::from_xyz(6.0, 0.0, 0.0).looking_at(Vec3::ZERO, Vec3::Y),
             camera: Camera {
@@ -32,21 +33,5 @@ pub fn spawn_camera(mut commands: Commands) {
         })
         .id();
 
-    commands
-        .spawn((NodeBundle::default(), TargetCamera(second_window_camera)))
-        .with_children(|parent| {
-            parent.spawn(TextBundle::from_section(
-                "Second window",
-                TextStyle::default(),
-            ));
-        });
-
-    commands
-        .spawn((NodeBundle::default(), TargetCamera(first_window_camera)))
-        .with_children(|parent| {
-            parent.spawn(TextBundle::from_section(
-                "First window",
-                TextStyle::default(),
-            ));
-        });
+    commands.insert_resource(RankWindowId(second_window));
 }

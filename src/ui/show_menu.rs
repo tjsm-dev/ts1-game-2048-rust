@@ -2,7 +2,7 @@ use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
 use crate::system::events::ChangeGameStatus;
 use crate::common::status_type::GameStatusType;
-use crate::system::resource::GameContext;
+use crate::system::resource::{GameContext, RankWindowId};
 
 const MAIN_MENU_WIDTH: f32 = 200.;
 const MAIN_MENU_HEIGHT: f32 = 200.;
@@ -16,7 +16,9 @@ pub fn show_menu(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
     mut events: EventReader<ChangeGameStatus>,
-    mut game_context: ResMut<GameContext>
+    mut game_context: ResMut<GameContext>,
+    rank_window_id: Res<RankWindowId>, 
+    mut query: Query<&mut Window>
 ) {
     for event in events.read() {
         match event.0 {
@@ -38,7 +40,11 @@ pub fn show_menu(
                 ));
             },
             GameStatusType::Rank => {
-                println!("Rank Menu Selected!")
+                println!("Rank Menu Selected!");
+
+                if let Ok(mut window) = query.get_mut(rank_window_id.0) {
+                    window.visible = !window.visible;
+                }
             }
             GameStatusType::Game => {
                 println!("Game Menu Selected!");
