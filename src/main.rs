@@ -30,6 +30,8 @@ fn main() {
             (
                 ui::show_menu::show_menu.after(
                     system::handle_keyboard_input::handle_keyboard_input),
+                system::game::move_tile.after(
+                    system::handle_keyboard_input::handle_keyboard_input),
             ),
         )
         .run();

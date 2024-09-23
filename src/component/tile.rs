@@ -3,7 +3,7 @@ use bevy::prelude::*;
 use crate::entity::defines::TileState;
 
 
-#[derive(Component, Debug, Clone, PartialEq)]
+#[derive(Component, Debug, Clone, Copy, PartialEq)]
 pub struct Tile {
     pub value: u16,
     pub position_x: u8,
