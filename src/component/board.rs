@@ -79,61 +79,13 @@ impl Board {
         empty_positions
     }
 
-    //pub fn move_tiles(&mut self, direction: &Direction) {
-      //  let mut moved = false;
-        //let mut merged = false;
-        //let mut new_empty_positions = HashSet::new();
-        // for x in 0..TILE_WIDTH {
-        //     for y in 0..TILE_HEIGHT {
-        //         let mut tile = self.get_tile(x, y).cloned();
-        //         if tile.is_none() {
-        //             continue;
-        //         }
-        //         let mut tile = tile.unwrap();
-        //         let mut new_x = x;
-        //         let mut new_y = y;
-        //         let mut new_tile = tile.clone();
-        //         while {
-        //             match direction {
-        //                 Direction::Up => {
-        //                     new_y = new_y.saturating_sub(1);
-        //                 }
-        //                 Direction::Down => {
-        //                     new_y = new_y.saturating_add(1);
-        //                 }
-        //                 Direction::Left => {
-        //                     new_x = new_x.saturating_sub(1);
-        //                 }
-        //                 Direction::Right => {
-        //                     new_x = new_x.saturating_add(1);
-        //                 }
-        //             }
-        //             if new_x >= TILE_WIDTH || new_y >= TILE_HEIGHT {
-        //                 break;
-        //             }
-        //             let new_tile = self.get_tile(new_x, new_y).cloned();
-        //             if new_tile.is_none() {
-        //                 continue;
-        //             }
-        //             let new_tile = new_tile.unwrap();
-        //             if new_tile.value == tile.value && !merged {
-        //                 tile.merge(new_tile.value);
-        //                 self.tiles.retain(|t| t.position_x != new_x || t.position_y != new_y);
-        //                 merged = true;
-        //                 moved = true;
-        //             }
-        //             break;
-        //         } {}
-        //         if new_x != x || new_y != y {
-        //             self.tiles.retain(|t| t.position_x != x || t.position_y != y);
-        //             new_tile.position_x = new_x;
-        //             new_tile.position_y = new_y;
-        //             self.tiles.push(new_tile);
-        //             moved = true;
-        //         }
-        //         new_empty_positions.insert((new_x, new_y));
-        //     }
-        // }
-        // self.empty_positions = new_empty_positions;
-   // }
+    pub fn move_left(&self) {
+        // 결과를 저장할 새로운 보드를 생성한다.
+        // y축 기준으로 for문을 돌린다.
+        // 0부터 4까지 순차적으로 value를 확인하여, merge가 가능한지 확인한다.
+        // merge가 가능하다는 것은 인접한 타일의 value가 같다는 것이다.
+        // 처음 발견한 value와 같은 value를 가진 타일이 등장하면 두 타일의 합을 새 보드에 저장한다.
+        // 이때, score를 증가시킨다.
+        // score는 합친 value들의 합이다.
+    }
 }
