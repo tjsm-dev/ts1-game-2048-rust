@@ -10,23 +10,29 @@ pub fn handle_keyboard_input(
     mut game_event: EventWriter<MoveTiles>
 ) {
     if keyboard_input.just_pressed(KeyCode::ArrowUp) {
-        println!("Move Up");
+        game_event.send(MoveTiles {
+            direction: direction::Direction::Up,
+        });
 
     } else if keyboard_input.just_pressed(KeyCode::ArrowDown) {
-        println!("Move Down");
+        game_event.send(MoveTiles {
+            direction: direction::Direction::Down,
+        });
 
     } else if keyboard_input.just_pressed(KeyCode::ArrowLeft) {
-        println!("Move Left");
+        game_event.send(MoveTiles {
+            direction: direction::Direction::Left,
+        });
 
     } else if keyboard_input.just_pressed(KeyCode::ArrowRight) {
-        println!("Move Right");
+        game_event.send(MoveTiles {
+            direction: direction::Direction::Right,
+        });
     } else if keyboard_input.just_pressed(KeyCode::Escape) {
         system_event.send(ChangeGameStatus(GameStatusType::MainMenu));
     } else if keyboard_input.just_pressed(KeyCode::KeyR) {
         system_event.send(ChangeGameStatus(GameStatusType::Rank));
     } else if keyboard_input.just_pressed(KeyCode::KeyQ) {
-        game_event.send(MoveTiles {
-            direction: direction::Direction::Up,
-        });
+
     }
 }
