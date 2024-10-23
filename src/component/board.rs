@@ -11,7 +11,7 @@ pub struct Position {
     pub y: usize,
 }
 
-#[derive(Component, Debug, Clone, Copy, PartialEq)]
+#[derive(Component, Resource, Debug, Clone, Copy, PartialEq)]
 pub struct Board {
     pub tiles: [[Tile; 4]; 4],
     pub score: u16,
@@ -34,6 +34,7 @@ impl Board {
         };
         board.spawn_tile();
         board.spawn_tile();
+        board.print();
         board
     }
 
