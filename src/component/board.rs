@@ -6,28 +6,27 @@ use crate::entity::defines::{TILE_HEIGHT, TILE_WIDTH};
 
 
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Point {
-    pub x: u8,
-    pub y: u8,
+pub struct Position {
+    pub x: usize,
+    pub y: usize,
 }
 
 #[derive(Component, Debug, Clone, Copy, PartialEq)]
 pub struct Board {
-    pub tiles: [Tile; 16],
+    pub tiles: [[Tile; 4]; 4],
     pub score: u16,
 }
 
 impl Board {
 
     pub fn new() -> Self {
-        let mut tiles = [Tile::new(0, 0, 0); 16];
-        for y in 0..TILE_HEIGHT {
-            for x in 0..TILE_WIDTH {
-                let index: usize = (y * TILE_WIDTH + x) as usize;
-                tiles[index].position_x = x;
-                tiles[index].position_x = y;
-            }
-        }
+
+        let mut tiles : [[Tile; 4]; 4] = [
+            [Tile::new(0), Tile::new(0),Tile::new(0),Tile::new(0)],
+            [Tile::new(0),Tile::new(0),Tile::new(0),Tile::new(0)],
+            [Tile::new(0),Tile::new(0),Tile::new(0),Tile::new(0)],
+            [Tile::new(0),Tile::new(0),Tile::new(0),Tile::new(0)],
+        ];
 
         let mut board = Board {
             tiles,
@@ -49,39 +48,33 @@ impl Board {
 
     pub fn print(&self) {
         print!("Board:\n");
-        for y in 0..TILE_HEIGHT {
-            for x in 0..TILE_WIDTH {
-                let tile = self.get_tile(x, y);
-               print!("{} ", tile.value);
+        for y in 0..self.tiles.len() {
+            for x in 0..self.tiles[y].len() {
+               print!("{} ", &(self.tiles[y][x]).value);
             }
             println!();
         }
     }
 
-    pub fn spawn_tile(&mut self) -> Option<&Tile> {
+    pub fn spawn_tile(&mut self) {
         let mut rng = thread_rng();
         let empty_positions = self.get_empty_positions();
-        let point = empty_positions[rng.gen_range(0..empty_positions.len())];
+        let p = empty_positions[rng.gen_range(0..empty_positions.len())];
 
         // 60% chance of spawning a 2, 40% chance of spawning a 4
         let value = if rng.gen_bool(0.6) { 2 } else { 4 };
-        let index = point.y as usize * TILE_WIDTH as usize + point.x as usize;
-        self.tiles[index].value = value;
-        self.tiles.last()
+        self.tiles[p.y][p.x].value = value;
     }
 
-    pub fn get_tile(&self, x: u8, y: u8) -> Tile {
-        let index = (y * TILE_WIDTH + x) as usize;
-        self.tiles[index]
-    }
-
-    pub fn get_empty_positions(&self) -> Vec<Point> {
+    pub fn get_empty_positions(&self) -> Vec<Position> {
         let mut empty_positions = Vec::new();
-        &self.tiles.iter().for_each(|t| {
-            if t.value == 0 {
-                empty_positions.push(Point { x: t.position_x, y: t.position_y });
+        for x in 0..TILE_WIDTH {
+            for y in 0..TILE_HEIGHT {
+                if self.tiles[y][x].value == 0 {
+                    empty_positions.push(Position { x, y });
+                }
             }
-        });
+        };
         empty_positions
     }
 
