@@ -12,7 +12,7 @@ fn main() {
             // 기본 해상도 설정
             primary_window: Some(Window {
                 title: "2047!".to_string(),
-                resolution: (1000.0, 1000.0).into(),
+                resolution: (400.0, 400.0).into(),
                 ..default()
             }),
             ..Default::default()
