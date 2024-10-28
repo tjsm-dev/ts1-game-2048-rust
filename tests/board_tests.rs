@@ -6,21 +6,21 @@ use ts1_game_2048_rust::component::board::Board;
 
 #[test]
 fn test_board_new() {
-    let board = Board::new();
+    let board = Board::create_add_random_tiles();
     assert_eq!(board.tiles.len(), 2);
     assert_eq!(board.score, 0);
 }
 
 #[test]
 fn test_board_spawn_tile() {
-    let mut board = Board::new();
+    let mut board = Board::create_add_random_tiles();
     board.spawn_tile();
     assert_eq!(board.count_tiles(), 3);
 }
 
 #[test]
 fn test_board_add_tile() {
-    let mut board = Board::new();
+    let mut board = Board::create_add_random_tiles();
     let tile = Tile::new(2, 0, 0);
     board.add_tile(tile);
     assert_eq!(board.count_tiles(), 3);
@@ -34,7 +34,7 @@ fn test_random_tile_generation() {
     let mut position_counts = HashMap::new();
 
     for _ in 0..iterations {
-        let mut new_board = Board::new(); // 매 반복마다 새 보드 생성
+        let mut new_board = Board::create_add_random_tiles(); // 매 반복마다 새 보드 생성
         if let Some(tile) = new_board.spawn_tile() {
             *value_counts.entry(tile.value).or_insert(0) += 1;
             *position_counts.entry((tile.position_x, tile.position_y)).or_insert(0) += 1;
@@ -76,7 +76,7 @@ fn test_random_tile_generation() {
 
 #[test]
 fn test_consecutive_tile_generations() {
-    let board = Board::new();
+    let board = Board::create_add_random_tiles();
     let mut generated_positions = HashSet::new();
 
     // 초기 보드 상태 확인 (2개의 타일이 이미 생성되어 있어야 함)

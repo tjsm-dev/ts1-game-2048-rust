@@ -20,6 +20,8 @@ pub fn move_tile(
             }
             Direction::Left => {
                 println!("Move Left");
+                board.move_left();
+                board.spawn_tiles();
             }
             Direction::Right => {
                 println!("Move Right");
