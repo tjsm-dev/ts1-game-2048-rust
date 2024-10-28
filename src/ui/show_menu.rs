@@ -3,6 +3,7 @@ use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 use crate::system::events::ChangeGameStatus;
 use crate::common::status_type::GameStatusType;
 use crate::system::resource::GameContext;
+use crate::ui::score_board::{create_score_board, ScoreBoard, ScoreBoardState};
 
 const MAIN_MENU_WIDTH: f32 = 200.;
 const MAIN_MENU_HEIGHT: f32 = 200.;
@@ -16,10 +17,18 @@ pub fn show_menu(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
     mut events: EventReader<ChangeGameStatus>,
-    mut game_context: ResMut<GameContext>
+    mut game_context: ResMut<GameContext>,
+    mut score_board_state: ResMut<ScoreBoardState>,
+    score_board_query: Query<Entity, With<ScoreBoard>>,
+    windows: Query<&Window>,
 ) {
     for event in events.read() {
         match event.0 {
+            GameStatusType::Rank => {
+                println!("Rank Menu Selected!");
+                create_score_board(commands, score_board_state, score_board_query);
+                return;  // Exit early after creating score board
+            }
             GameStatusType::MainMenu => {
                 println!("Main Menu Selected!");
                 let mesh = Mesh::from(Rectangle::new(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
@@ -37,9 +46,6 @@ pub fn show_menu(
                     },
                 ));
             },
-            GameStatusType::Rank => {
-                println!("Rank Menu Selected!")
-            }
             GameStatusType::Game => {
                 println!("Game Menu Selected!");
                 game_context.status = GameStatusType::Game;
