@@ -1,9 +1,8 @@
 use bevy::prelude::*;
 
 use crate::common::status_type::GameStatusType;
-use super::events::{ChangeGameStatus, MoveTiles, ShowScoreBoard};
 use crate::common::direction;
-use crate::system::events::ScoreBoardType;
+use super::events::{ChangeGameStatus, MoveTiles, ShowScoreBoard};
 
 pub fn handle_keyboard_input(
     keyboard_input: Res<ButtonInput<KeyCode>>,
@@ -12,27 +11,33 @@ pub fn handle_keyboard_input(
     mut score_board_event: EventWriter<ShowScoreBoard>,
 ) {
     if keyboard_input.just_pressed(KeyCode::ArrowUp) {
-        println!("Move Up");
-
-    } else if keyboard_input.just_pressed(KeyCode::ArrowDown) {
-        println!("Move Down");
-
-    } else if keyboard_input.just_pressed(KeyCode::ArrowLeft) {
-        println!("Move Left");
-
-    } else if keyboard_input.just_pressed(KeyCode::ArrowRight) {
-        println!("Move Right");
-    } else if keyboard_input.just_pressed(KeyCode::Escape) {
-        system_event.send(ChangeGameStatus(GameStatusType::MainMenu));
-    } else if keyboard_input.just_pressed(KeyCode::KeyQ) {
         game_event.send(MoveTiles {
             direction: direction::Direction::Up,
         });
-        
+
+    } else if keyboard_input.just_pressed(KeyCode::ArrowDown) {
+        game_event.send(MoveTiles {
+            direction: direction::Direction::Down,
+        });
+
+    } else if keyboard_input.just_pressed(KeyCode::ArrowLeft) {
+        game_event.send(MoveTiles {
+            direction: direction::Direction::Left,
+        });
+
+    } else if keyboard_input.just_pressed(KeyCode::ArrowRight) {
+        game_event.send(MoveTiles {
+            direction: direction::Direction::Right,
+        });
+    } else if keyboard_input.just_pressed(KeyCode::Escape) {
+        system_event.send(ChangeGameStatus(GameStatusType::MainMenu));
+    } else if keyboard_input.just_pressed(KeyCode::KeyR) {
+        system_event.send(ChangeGameStatus(GameStatusType::Rank));
+    } else if keyboard_input.just_pressed(KeyCode::KeyQ) {
+
     }
     // TODO: Add logic for score board
     else if keyboard_input.just_pressed(KeyCode::KeyS) {
         score_board_event.send(ShowScoreBoard);
-        println!("Show Score Board");
     }
 }

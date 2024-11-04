@@ -1,36 +1,44 @@
 use bevy::prelude::*;
-use bevy::input::ButtonInput;
 use ts1_game_2048_rust::{system, ui};
-use ts1_game_2048_rust::entity::defines::Boards;
+use ts1_game_2048_rust::component::board::Board;
 use ts1_game_2048_rust::system::resource::GameContext;
 use crate::system::events::{TextPopup, ShowScoreBoard, TextPopupEvent};
-use crate::ui::score_board::{TextPopupExpires, create_score_board, cleanup_score_board, ScoreBoardState};
-use bevy::input::keyboard::KeyCode;
+use crate::ui::score_board::{TextPopupExpires, ScoreBoardState};
 
 fn main() {
     App::new()
-        .insert_resource(Boards::default())
+        .insert_resource(ClearColor(Color::rgb(0.88, 0.88, 0.88)))
+        .insert_resource(Board::create_add_random_tiles())
         .insert_resource(GameContext::default())
         .insert_resource(ScoreBoardState::default())
-        .add_plugins(DefaultPlugins)
-        .add_event::<system::events::ChangeGameStatus>()
-        .add_event::<system::events::MoveTiles>()
-        .add_systems(Startup, (system::camera::spawn_camera, system::game::spawn_board))
-        // Menu systems - triggered by Escape
-        .add_systems(
-            Update,
+        .add_plugins(DefaultPlugins.set(WindowPlugin {
+            // 기본 해상도 설정
+            primary_window: Some(Window {
+                title: "2047!".to_string(),
+                resolution: (400.0, 400.0).into(),
+                ..default()
+            }),
+            ..Default::default()
+        }))
+        .add_systems(Startup, system::camera::spawn_camera)
+        .add_systems(Update,
             (
                 system::handle_keyboard_input::handle_keyboard_input,
-                ui::show_menu::show_menu,
-            ).run_if(|keyboard: Res<ButtonInput<KeyCode>>| keyboard.just_pressed(KeyCode::Escape))
+                system::window_util::handle_window_close,
+            ),
         )
-        // Score board systems - triggered by S key
-        .add_systems(
-            Update,
+        .add_systems(Update,
             (
-                create_score_board,
-            ).run_if(|keyboard: Res<ButtonInput<KeyCode>>| keyboard.just_pressed(KeyCode::KeyS))
+                ui::show_menu::show_menu.after(
+                    system::handle_keyboard_input::handle_keyboard_input),
+                system::game::move_tile.after(
+                    system::handle_keyboard_input::handle_keyboard_input),
+                ui::score_board::create_score_board.after(
+                    system::handle_keyboard_input::handle_keyboard_input),
+            ),
         )
+        .add_event::<system::events::ChangeGameStatus>()
+        .add_event::<system::events::MoveTiles>()
         .add_event::<TextPopup>()
         .add_event::<ShowScoreBoard>()
         .add_event::<TextPopupExpires>()
