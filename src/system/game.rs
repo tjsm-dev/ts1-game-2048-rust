@@ -1,14 +1,12 @@
 use bevy::prelude::*;
 
 use crate::component::board::Board;
-use crate::system::{events::MoveTiles, resource::GameContext};
+use crate::system::events::MoveTiles;
 use crate::common::direction::Direction;
 
 pub fn move_tile(
-    mut commands: Commands,
     mut board: ResMut<Board>,
     mut move_tiles: EventReader<MoveTiles>,
-    mut game_context: ResMut<GameContext>
 ) {
     for event in move_tiles.read() {
         match event.direction {
