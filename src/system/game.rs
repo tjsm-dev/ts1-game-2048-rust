@@ -11,18 +11,20 @@ pub fn move_tile(
     for event in move_tiles.read() {
         match event.direction {
             Direction::Up => {
-                println!("Move Up");
+                board.move_up();
+                board.spawn_tiles();
             }
             Direction::Down => {
-                println!("Move Down");
+                board.move_down();
+                board.spawn_tiles();
             }
             Direction::Left => {
-                println!("Move Left");
                 board.move_left();
                 board.spawn_tiles();
             }
             Direction::Right => {
-                println!("Move Right");
+                board.move_right();
+                board.spawn_tiles();
             }
             Direction::None => {
                 /*let b = boards.iter()
