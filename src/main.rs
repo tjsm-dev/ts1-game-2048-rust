@@ -4,6 +4,8 @@ use ts1_game_2048_rust::component::board::Board;
 use ts1_game_2048_rust::system::resource::GameContext;
 use crate::system::events::{TextPopup, ShowScoreBoard, TextPopupEvent};
 use crate::ui::score_board::{TextPopupExpires, ScoreBoardState};
+use ts1_game_2048_rust::ui::game_ui::{spawn_game_ui, sync_board_with_ui, GameUI};
+use bevy::window::WindowResolution;
 
 fn main() {
     App::new()
@@ -12,31 +14,28 @@ fn main() {
         .insert_resource(GameContext::default())
         .insert_resource(ScoreBoardState::default())
         .add_plugins(DefaultPlugins.set(WindowPlugin {
-            // 기본 해상도 설정
             primary_window: Some(Window {
                 title: "2047!".to_string(),
-                resolution: (400.0, 400.0).into(),
+                resolution: WindowResolution::new(800.0, 600.0),
+                resizable: true,
                 ..default()
             }),
             ..Default::default()
         }))
-        .add_systems(Startup, system::camera::spawn_camera)
-        .add_systems(Update,
-            (
-                system::handle_keyboard_input::handle_keyboard_input,
-                system::window_util::handle_window_close,
-            ),
-        )
-        .add_systems(Update,
-            (
-                ui::show_menu::show_menu.after(
-                    system::handle_keyboard_input::handle_keyboard_input),
-                system::game::move_tile.after(
-                    system::handle_keyboard_input::handle_keyboard_input),
-                ui::score_board::create_score_board.after(
-                    system::handle_keyboard_input::handle_keyboard_input),
-            ),
-        )
+        .add_systems(Startup, (
+            system::camera::spawn_camera,
+            spawn_game_ui,
+        ))
+        .add_systems(Update, (
+            system::handle_keyboard_input::handle_keyboard_input,
+            system::window_util::handle_window_close,
+            ui::show_menu::show_menu.after(system::handle_keyboard_input::handle_keyboard_input),
+            system::game::move_tile.after(system::handle_keyboard_input::handle_keyboard_input),
+            ui::score_board::create_score_board.after(system::handle_keyboard_input::handle_keyboard_input),
+            sync_board_with_ui.after(system::game::move_tile),
+            ui::game_ui::animate_tiles,
+            ui::game_ui::animate_merges,
+        ))
         .add_event::<system::events::ChangeGameStatus>()
         .add_event::<system::events::MoveTiles>()
         .add_event::<TextPopup>()
