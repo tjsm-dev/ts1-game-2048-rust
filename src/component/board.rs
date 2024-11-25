@@ -62,6 +62,38 @@ impl Board {
         }
     }
 
+    fn is_spawnable(&self) -> bool {
+        !self.get_empty_positions().is_empty()
+    }
+
+    fn is_full(&self) -> bool {
+        self.get_empty_positions().is_empty()
+    }
+
+    pub fn is_moveable(&self) -> bool {
+        if !self.is_full() {
+            return true;
+        }
+
+        for y in 0..TILE_HEIGHT {
+            for x in 0..TILE_WIDTH - 1 {
+                if self.tiles[y][x].value == self.tiles[y][x + 1].value {
+                    return true;
+                }
+            }
+        }
+
+        for x in 0..TILE_WIDTH {
+            for y in 0..TILE_HEIGHT - 1 {
+                if self.tiles[y][x].value == self.tiles[y + 1][x].value {
+                    return true;
+                }
+            }
+        }
+
+        false
+    }
+
     fn spawn_tile(&mut self) {
         let mut rng = thread_rng();
         let empty_positions = self.get_empty_positions();
@@ -73,10 +105,12 @@ impl Board {
     }
 
     pub fn spawn_tiles(&mut self) {
-        println!("spawn tiles");
-        self.spawn_tile();
-        self.spawn_tile();
-        self.print();
+        if self.is_spawnable() {
+            self.spawn_tile();
+        }
+        if self.is_spawnable() {
+            self.spawn_tile();
+        }
     }
 
     fn get_empty_positions(&self) -> Vec<Position> {
