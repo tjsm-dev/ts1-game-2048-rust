@@ -2,7 +2,8 @@ use bevy::prelude::*;
 use rand::{thread_rng, Rng};
 
 use crate::component::tile::Tile;
-use crate::entity::defines::{TILE_HEIGHT, TILE_WIDTH};
+const TILE_WIDTH: usize = 4;
+const TILE_HEIGHT: usize = 4;
 
 
 #[derive(Debug, Clone, Copy, PartialEq)]
