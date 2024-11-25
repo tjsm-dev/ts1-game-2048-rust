@@ -3,7 +3,7 @@ use ts1_game_2048_rust::{system, ui};
 use ts1_game_2048_rust::component::board::Board;
 use ts1_game_2048_rust::system::resource::GameContext;
 use crate::system::events::{TextPopup, ShowScoreBoard, TextPopupEvent};
-use crate::ui::score_board::{TextPopupExpires, ScoreBoardState};
+use crate::ui::score_board::ScoreBoardState;
 use ts1_game_2048_rust::ui::game_ui::{spawn_game_ui, sync_board_with_ui};
 use bevy::window::WindowResolution;
 
@@ -39,7 +39,6 @@ fn main() {
         .add_event::<system::events::MoveTiles>()
         .add_event::<TextPopup>()
         .add_event::<ShowScoreBoard>()
-        .add_event::<TextPopupExpires>()
         .add_event::<TextPopupEvent>()
         .run();
 }

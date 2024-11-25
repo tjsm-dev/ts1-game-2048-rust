@@ -6,7 +6,6 @@ use crate::system::resource::GameContext;
 
 const MAIN_MENU_WIDTH: f32 = 200.;
 const MAIN_MENU_HEIGHT: f32 = 200.;
-pub const POP_UP_MENU_COLOR: Color = Color::rgb(1.0, 0.0, 0.0);
 
 #[derive(Component)]
 struct MainMenuHandle;

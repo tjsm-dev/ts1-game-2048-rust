@@ -8,7 +8,6 @@ pub struct ChangeGameStatus(pub ViewStatusType);
 
 
 #[derive(Debug, Event, Clone)]
-// #[reflect(Debug)]
 pub struct MoveTiles {
     pub direction: Direction,
 }
@@ -21,7 +20,6 @@ impl Default for MoveTiles {
     }
 }
 
-// Add these struct definitions
 #[derive(Event)]
 pub struct TextPopup;
 
@@ -48,7 +46,3 @@ pub struct ScoreData {
 
 #[derive(Debug, Event)]
 pub struct ShowScoreBoard;
-
-pub struct TextPopupExpires {
-    pub expires_in: f32,
-}

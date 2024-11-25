@@ -33,11 +33,7 @@ pub fn handle_keyboard_input(
         system_event.send(ChangeGameStatus(ViewStatusType::MainMenu));
     } else if keyboard_input.just_pressed(KeyCode::KeyR) {
         system_event.send(ChangeGameStatus(ViewStatusType::Rank));
-    } else if keyboard_input.just_pressed(KeyCode::KeyQ) {
-
-    }
-    // TODO: Add logic for score board
-    else if keyboard_input.just_pressed(KeyCode::KeyS) {
+    } else if keyboard_input.just_pressed(KeyCode::KeyS) {
         score_board_event.send(ShowScoreBoard);
     }
 }
