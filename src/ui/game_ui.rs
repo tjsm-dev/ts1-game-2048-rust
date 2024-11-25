@@ -25,7 +25,7 @@ const CELL_MARGIN: f32 = 6.0;
 const CELL_SIZE: f32 = (GRID_SIZE - 2.0 * GRID_PADDING - 8.0 * CELL_MARGIN) / 4.0;
 const ANIMATION_DURATION: f32 = 0.15;
 
-pub fn spawn_game_ui(mut commands: Commands) {
+pub fn spawn_game_ui(mut commands: Commands, board: Res<Board>) {
     // Root container (takes up entire window)
     commands
         .spawn((
@@ -177,11 +177,27 @@ pub fn sync_board_with_ui(
     mut commands: Commands,
     grid_query: Query<Entity, With<GameGrid>>,
     tile_query: Query<Entity, With<TileText>>,
+    score_query: Query<Entity, With<ScoreText>>,
 ) {
     // First, remove ALL existing tile texts
     for entity in tile_query.iter() {
         commands.entity(entity).despawn_recursive();
     }
+
+    // 점수 무한 중첩 그리기 상태
+    // let score_entity = score_query.single();
+    //
+    // commands.entity(score_entity).with_children(|parent| {
+    //     parent.spawn(TextBundle::from_section(
+    //         board.score.to_string(),
+    //         TextStyle {
+    //             font_size: 30.0,
+    //             color: Color::rgb(0.9, 0.9, 0.9),
+    //             ..default()
+    //         },
+    //     ));
+    // });
+
 
     let grid_entity = grid_query.single();
     
