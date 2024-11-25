@@ -20,6 +20,9 @@ impl Default for MoveTiles {
     }
 }
 
+#[derive(Debug, Event)]
+pub struct UpdateGameStatus;
+
 #[derive(Event)]
 pub struct TextPopupEvent {
     pub content: String,

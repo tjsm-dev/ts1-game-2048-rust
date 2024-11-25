@@ -30,13 +30,15 @@ fn main() {
             system::handle_keyboard_input::handle_keyboard_input,
             ui::show_menu::show_menu.after(system::handle_keyboard_input::handle_keyboard_input),
             system::game::move_tile.after(system::handle_keyboard_input::handle_keyboard_input),
+            system::game::update_game.after(system::game::move_tile),
             ui::score_board::create_score_board.after(system::handle_keyboard_input::handle_keyboard_input),
-            sync_board_with_ui.after(system::game::move_tile),
+            sync_board_with_ui.after(system::game::update_game),
             ui::game_ui::animate_tiles,
             ui::game_ui::animate_merges,
         ))
         .add_event::<system::events::ChangeGameStatus>()
         .add_event::<system::events::MoveTiles>()
+        .add_event::<system::events::UpdateGameStatus>()
         .add_event::<ShowScoreBoard>()
         .add_event::<TextPopupEvent>()
         .run();
