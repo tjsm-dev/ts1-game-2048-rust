@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::common::status_type::GameStatusType;
+use crate::common::status_type::ViewStatusType;
 use crate::common::direction;
 use super::events::{ChangeGameStatus, MoveTiles, ShowScoreBoard};
 
@@ -30,9 +30,9 @@ pub fn handle_keyboard_input(
             direction: direction::Direction::Right,
         });
     } else if keyboard_input.just_pressed(KeyCode::Escape) {
-        system_event.send(ChangeGameStatus(GameStatusType::MainMenu));
+        system_event.send(ChangeGameStatus(ViewStatusType::MainMenu));
     } else if keyboard_input.just_pressed(KeyCode::KeyR) {
-        system_event.send(ChangeGameStatus(GameStatusType::Rank));
+        system_event.send(ChangeGameStatus(ViewStatusType::Rank));
     } else if keyboard_input.just_pressed(KeyCode::KeyQ) {
 
     }

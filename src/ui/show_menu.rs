@@ -1,7 +1,7 @@
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
 use crate::system::events::ChangeGameStatus;
-use crate::common::status_type::GameStatusType;
+use crate::common::status_type::ViewStatusType;
 use crate::system::resource::GameContext;
 
 const MAIN_MENU_WIDTH: f32 = 200.;
@@ -20,11 +20,11 @@ pub fn show_menu(
 ) {
     for event in events.read() {
         match event.0 {
-            GameStatusType::Rank => {
+            ViewStatusType::Rank => {
                 println!("Rank Menu Selected!");
                 return;  // Exit early after creating score board
             }
-            GameStatusType::MainMenu => {
+            ViewStatusType::MainMenu => {
                 println!("Main Menu Selected!");
                 let mesh = Mesh::from(Rectangle::new(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
                 let material = ColorMaterial::from(Color::rgb(0., 1., 0.));
@@ -41,9 +41,9 @@ pub fn show_menu(
                     },
                 ));
             },
-            GameStatusType::Game => {
+            ViewStatusType::Game => {
                 println!("Game Menu Selected!");
-                game_context.status = GameStatusType::Game;
+                game_context.status = ViewStatusType::Game;
             }
         }
     }

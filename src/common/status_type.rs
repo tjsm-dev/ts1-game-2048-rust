@@ -1,24 +1,24 @@
 // TODO: refactoring - 화면 상태 타입으로 이름 변경
-pub enum GameStatusType {
+pub enum ViewStatusType {
     MainMenu,
     Rank,
     Game,
 }
 
-impl Default for GameStatusType {
+impl Default for ViewStatusType {
     fn default() -> Self {
-        GameStatusType::Game
+        ViewStatusType::Game
     }
 }
 
-pub enum GameLifecycle {
+pub enum GameStatusType {
     Ready,
     OnGame,
     GameOver,
 }
 
-impl Default for GameLifecycle {
+impl Default for GameStatusType {
     fn default() -> Self {
-        GameLifecycle::OnGame
+        GameStatusType::OnGame
     }
 }

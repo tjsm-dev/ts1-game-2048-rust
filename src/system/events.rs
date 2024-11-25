@@ -1,10 +1,10 @@
 use bevy::prelude::*;
 
-use crate::common::{status_type::GameStatusType, direction::Direction};
+use crate::common::{status_type::ViewStatusType, direction::Direction};
 use serde::{Deserialize, Serialize};
 
 #[derive(Event)]
-pub struct ChangeGameStatus(pub GameStatusType);
+pub struct ChangeGameStatus(pub ViewStatusType);
 
 
 #[derive(Debug, Event, Clone)]
