@@ -21,9 +21,6 @@ impl Default for MoveTiles {
 }
 
 #[derive(Event)]
-pub struct TextPopup;
-
-#[derive(Event)]
 pub struct TextPopupEvent {
     pub content: String,
     pub font: Option<Handle<Font>>,
