@@ -2,9 +2,9 @@ use bevy::prelude::*;
 use ts1_game_2048_rust::{system, ui};
 use ts1_game_2048_rust::component::board::Board;
 use ts1_game_2048_rust::system::resource::GameContext;
-use crate::system::events::{TextPopup, ShowScoreBoard, TextPopupEvent};
-use crate::ui::score_board::{TextPopupExpires, ScoreBoardState};
-use ts1_game_2048_rust::ui::game_ui::{spawn_game_ui, sync_board_with_ui, GameUI};
+use crate::system::events::{ShowScoreBoard, TextPopupEvent};
+use crate::ui::score_board::ScoreBoardState;
+use ts1_game_2048_rust::ui::game_ui::{spawn_game_ui, sync_board_with_ui};
 use bevy::window::WindowResolution;
 
 fn main() {
@@ -28,7 +28,6 @@ fn main() {
         ))
         .add_systems(Update, (
             system::handle_keyboard_input::handle_keyboard_input,
-            system::window_util::handle_window_close,
             ui::show_menu::show_menu.after(system::handle_keyboard_input::handle_keyboard_input),
             system::game::move_tile.after(system::handle_keyboard_input::handle_keyboard_input),
             ui::score_board::create_score_board.after(system::handle_keyboard_input::handle_keyboard_input),
@@ -38,9 +37,7 @@ fn main() {
         ))
         .add_event::<system::events::ChangeGameStatus>()
         .add_event::<system::events::MoveTiles>()
-        .add_event::<TextPopup>()
         .add_event::<ShowScoreBoard>()
-        .add_event::<TextPopupExpires>()
         .add_event::<TextPopupEvent>()
         .run();
 }

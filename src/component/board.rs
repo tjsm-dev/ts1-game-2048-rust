@@ -2,7 +2,8 @@ use bevy::prelude::*;
 use rand::{thread_rng, Rng};
 
 use crate::component::tile::Tile;
-use crate::entity::defines::{TILE_HEIGHT, TILE_WIDTH};
+const TILE_WIDTH: usize = 4;
+const TILE_HEIGHT: usize = 4;
 
 
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -32,13 +33,12 @@ impl Board {
     }
 
     fn create_tiles() -> [[Tile; 4]; 4] {
-        let mut tiles : [[Tile; 4]; 4] = [
+        [
             [Tile::new(0), Tile::new(0),Tile::new(0),Tile::new(0)],
             [Tile::new(0),Tile::new(0),Tile::new(0),Tile::new(0)],
             [Tile::new(0),Tile::new(0),Tile::new(0),Tile::new(0)],
             [Tile::new(0),Tile::new(0),Tile::new(0),Tile::new(0)],
-        ];
-        tiles
+        ]
     }
 
     pub fn add_score(&mut self, score: u16) {
@@ -46,12 +46,10 @@ impl Board {
     }
 
     pub fn copy(&self) -> Self {
-
-        let mut board = Board {
+        Board {
             tiles: self.tiles.clone(),
             score: self.score,
-        };
-        board
+        }
     }
 
     pub fn print(&self) {
@@ -64,13 +62,6 @@ impl Board {
         }
     }
 
-    pub fn spawn_tiles(&mut self) {
-        println!("spawn tiles");
-        self.spawn_tile();
-        self.spawn_tile();
-        self.print();
-    }
-
     fn spawn_tile(&mut self) {
         let mut rng = thread_rng();
         let empty_positions = self.get_empty_positions();
@@ -81,7 +72,14 @@ impl Board {
         self.tiles[p.y][p.x].value = value;
     }
 
-    pub fn get_empty_positions(&self) -> Vec<Position> {
+    pub fn spawn_tiles(&mut self) {
+        println!("spawn tiles");
+        self.spawn_tile();
+        self.spawn_tile();
+        self.print();
+    }
+
+    fn get_empty_positions(&self) -> Vec<Position> {
         let mut empty_positions = Vec::new();
         for x in 0..TILE_WIDTH {
             for y in 0..TILE_HEIGHT {

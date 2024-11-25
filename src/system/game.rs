@@ -27,12 +27,6 @@ pub fn move_tile(
                 board.spawn_tiles();
             }
             Direction::None => {
-                /*let b = boards.iter()
-                    .map(|e| *board.get_mut(*e).unwrap())
-                    .collect::<Vec<Board>>();
-                for mut board in b {
-                    board.print();
-                }*/
             }
         }
     }
