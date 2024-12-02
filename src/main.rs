@@ -31,7 +31,7 @@ fn main() {
             ui::show_menu::show_menu.after(system::handle_keyboard_input::handle_keyboard_input),
             system::game::move_tile.after(system::handle_keyboard_input::handle_keyboard_input),
             system::game::update_game.after(system::game::move_tile),
-            ui::score_board::create_score_board.after(system::handle_keyboard_input::handle_keyboard_input),
+            ui::score_board::create_score_board.after(ui::show_menu::show_menu),
             sync_board_with_ui.after(system::game::update_game),
             ui::game_ui::animate_tiles,
             ui::game_ui::animate_merges,

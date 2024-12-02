@@ -1,6 +1,6 @@
 use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
 
-use crate::system::events::ChangeGameStatus;
+use crate::system::events::{ChangeGameStatus, ShowScoreBoard};
 use crate::common::status_type::ViewStatusType;
 use crate::system::resource::GameContext;
 
@@ -16,12 +16,12 @@ pub fn show_menu(
     mut materials: ResMut<Assets<ColorMaterial>>,
     mut events: EventReader<ChangeGameStatus>,
     mut game_context: ResMut<GameContext>,
+    mut score_board_event: EventWriter<ShowScoreBoard>
 ) {
     for event in events.read() {
         match event.0 {
             ViewStatusType::Rank => {
-                println!("Rank Menu Selected!");
-                return;  // Exit early after creating score board
+                score_board_event.send(ShowScoreBoard);
             }
             ViewStatusType::MainMenu => {
                 println!("Main Menu Selected!");
