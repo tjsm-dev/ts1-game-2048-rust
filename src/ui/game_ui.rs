@@ -31,7 +31,7 @@ const CELL_MARGIN: f32 = 6.0;
 const CELL_SIZE: f32 = (GRID_SIZE - 2.0 * GRID_PADDING - 8.0 * CELL_MARGIN) / 4.0;
 const ANIMATION_DURATION: f32 = 0.15;
 
-pub fn spawn_game_ui(mut commands: Commands, board: Res<Board>) {
+pub fn spawn_game_ui(mut commands: Commands) {
     // Root container (takes up entire window)
     commands
         .spawn((
