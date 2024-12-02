@@ -3,6 +3,8 @@ use bevy::prelude::*;
 use crate::component::board::Board;
 use crate::system::events::{MoveTiles, UpdateGameStatus};
 use crate::common::direction::Direction;
+use crate::system::data::load_scores;
+use crate::system::resource::GameContext;
 
 pub fn move_tile(
     mut board: ResMut<Board>,
@@ -44,4 +46,13 @@ pub fn update_game(
             print!("Game Over!\n");
         }
     }
+}
+
+pub fn load_game_data(
+    mut game_context: ResMut<GameContext>,
+) {
+    let mut scores = load_scores().unwrap_or_default();
+
+    scores.sort_by(|a, b| b.score.cmp(&a.score));
+    game_context.best_score = scores.first().map(|s| s.score).unwrap_or(0);
 }

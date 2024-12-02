@@ -25,6 +25,7 @@ fn main() {
         .add_systems(Startup, (
             system::camera::spawn_camera,
             spawn_game_ui,
+            system::game::load_game_data,
         ))
         .add_systems(Update, (
             system::handle_keyboard_input::handle_keyboard_input,

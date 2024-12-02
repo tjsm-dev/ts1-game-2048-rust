@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use crate::component::board::Board;
 use crate::component::animation::{MoveAnimation, MergeAnimation};
+use crate::system::resource::GameContext;
 
 #[derive(Component)]
 pub struct GameUI;
@@ -31,7 +32,7 @@ const CELL_MARGIN: f32 = 6.0;
 const CELL_SIZE: f32 = (GRID_SIZE - 2.0 * GRID_PADDING - 8.0 * CELL_MARGIN) / 4.0;
 const ANIMATION_DURATION: f32 = 0.15;
 
-pub fn spawn_game_ui(mut commands: Commands) {
+pub fn spawn_game_ui(mut commands: Commands, game_context: Res<GameContext>) {
     // Root container (takes up entire window)
     commands
         .spawn((
@@ -80,7 +81,7 @@ pub fn spawn_game_ui(mut commands: Commands) {
                     )
                     .with_children(|parent| {
                         spawn_score_container(parent, "Score", 0, ScorePanel, ScoreText);
-                        spawn_score_container(parent, "Best", 0, BestScorePanel, BestScoreText);
+                        spawn_score_container(parent, "Best", game_context.best_score, BestScorePanel, BestScoreText);
                     });
 
                 // Game Grid
