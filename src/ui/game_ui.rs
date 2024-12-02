@@ -1,12 +1,19 @@
 use bevy::prelude::*;
 use crate::component::board::Board;
 use crate::component::animation::{MoveAnimation, MergeAnimation};
+use crate::system::resource::GameContext;
 
 #[derive(Component)]
 pub struct GameUI;
 
 #[derive(Component)]
 pub struct GameGrid;
+
+#[derive(Component)]
+pub struct ScorePanel;
+
+#[derive(Component)]
+pub struct BestScorePanel;
 
 #[derive(Component)]
 pub struct ScoreText;
@@ -25,7 +32,7 @@ const CELL_MARGIN: f32 = 6.0;
 const CELL_SIZE: f32 = (GRID_SIZE - 2.0 * GRID_PADDING - 8.0 * CELL_MARGIN) / 4.0;
 const ANIMATION_DURATION: f32 = 0.15;
 
-pub fn spawn_game_ui(mut commands: Commands, board: Res<Board>) {
+pub fn spawn_game_ui(mut commands: Commands, game_context: Res<GameContext>) {
     // Root container (takes up entire window)
     commands
         .spawn((
@@ -63,17 +70,18 @@ pub fn spawn_game_ui(mut commands: Commands, board: Res<Board>) {
                 // Header with scores
                 parent
                     .spawn(NodeBundle {
-                        style: Style {
-                            width: Val::Percent(100.0),
-                            justify_content: JustifyContent::SpaceBetween,
-                            margin: UiRect::bottom(Val::Px(20.0)),
+                            style: Style {
+                                width: Val::Percent(100.0),
+                                justify_content: JustifyContent::SpaceBetween,
+                                margin: UiRect::bottom(Val::Px(20.0)),
+                                ..default()
+                            },
                             ..default()
                         },
-                        ..default()
-                    })
+                    )
                     .with_children(|parent| {
-                        spawn_score_container(parent, "Score", 0, ScoreText);
-                        spawn_score_container(parent, "Best", 0, BestScoreText);
+                        spawn_score_container(parent, "Score", 0, ScorePanel, ScoreText);
+                        spawn_score_container(parent, "Best", game_context.best_score, BestScorePanel, BestScoreText);
                     });
 
                 // Game Grid
@@ -119,20 +127,23 @@ fn spawn_score_container(
     parent: &mut ChildBuilder,
     label: &str,
     initial_score: u32,
+    panel_component: impl Component,
     score_component: impl Component,
 ) {
     parent
-        .spawn(NodeBundle {
-            style: Style {
-                flex_direction: FlexDirection::Column,
-                align_items: AlignItems::Center,
-                padding: UiRect::all(Val::Px(10.0)),
-                min_width: Val::Px(100.0),
+        .spawn((
+            NodeBundle {
+                style: Style {
+                    flex_direction: FlexDirection::Column,
+                    align_items: AlignItems::Center,
+                    padding: UiRect::all(Val::Px(10.0)),
+                    min_width: Val::Px(100.0),
+                    ..default()
+                },
+                background_color: BackgroundColor(Color::rgb(0.7, 0.6, 0.5)),
                 ..default()
-            },
-            background_color: BackgroundColor(Color::rgb(0.7, 0.6, 0.5)),
-            ..default()
-        })
+        }, panel_component
+        ))
         .with_children(|parent| {
             parent.spawn(TextBundle::from_section(
                 label,
@@ -177,6 +188,7 @@ pub fn sync_board_with_ui(
     mut commands: Commands,
     grid_query: Query<Entity, With<GameGrid>>,
     tile_query: Query<Entity, With<TileText>>,
+    panel_query: Query<Entity, With<ScorePanel>>,
     score_query: Query<Entity, With<ScoreText>>,
 ) {
     // First, remove ALL existing tile texts
@@ -184,20 +196,26 @@ pub fn sync_board_with_ui(
         commands.entity(entity).despawn_recursive();
     }
 
-    // 점수 무한 중첩 그리기 상태
-    // let score_entity = score_query.single();
-    //
-    // commands.entity(score_entity).with_children(|parent| {
-    //     parent.spawn(TextBundle::from_section(
-    //         board.score.to_string(),
-    //         TextStyle {
-    //             font_size: 30.0,
-    //             color: Color::rgb(0.9, 0.9, 0.9),
-    //             ..default()
-    //         },
-    //     ));
-    // });
+    for entity in score_query.iter() {
+        commands.entity(entity).despawn_recursive();
+    }
 
+    // 점수 무한 중첩 그리기 상태
+    let panel_entity = panel_query.single();
+
+    commands.entity(panel_entity).with_children(|parent| {
+        parent.spawn((
+            TextBundle::from_section(
+                board.score.to_string(),
+                TextStyle {
+                    font_size: 30.0,
+                    color: Color::rgb(0.9, 0.9, 0.9),
+                    ..default()
+                },
+            ),
+            ScoreText,
+        ));
+    });
 
     let grid_entity = grid_query.single();
     

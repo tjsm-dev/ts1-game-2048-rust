@@ -5,4 +5,5 @@ use crate::common::status_type::{ViewStatusType, GameStatusType};
 pub struct GameContext {
     pub status: ViewStatusType,
     pub lifecycle: GameStatusType,
+    pub best_score: u32,
 }
