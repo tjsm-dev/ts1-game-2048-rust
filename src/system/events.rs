@@ -23,16 +23,6 @@ impl Default for MoveTiles {
 #[derive(Debug, Event)]
 pub struct UpdateGameStatus;
 
-#[derive(Event)]
-pub struct TextPopupEvent {
-    pub content: String,
-    pub font: Option<Handle<Font>>,
-    pub font_size: f32,
-    pub font_color: Color,
-    pub margin: UiRect,
-    pub padding: UiRect,
-}
-
 pub enum ScoreBoardType {
     Current,
     HighScore,
@@ -46,3 +36,6 @@ pub struct ScoreData {
 
 #[derive(Debug, Event)]
 pub struct ShowScoreBoard;
+
+#[derive(Debug, Event)]
+pub struct ToggleScoreBoard;
