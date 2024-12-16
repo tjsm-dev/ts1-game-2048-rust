@@ -2,12 +2,11 @@ use bevy::prelude::*;
 
 use crate::common::status_type::GameStatusType;
 use crate::component::board::Board;
-use crate::system::events::{MoveTiles, UpdateGameStatus, ShowScoreBoard, ToggleScoreBoard};
-use crate::ui::score_board::ScoreBoardState;
+use crate::system::events::{MoveTiles, UpdateGameStatus, ChangeGameStatus};
 use crate::common::direction::Direction;
 use crate::system::data::load_scores;
 use crate::system::resource::GameContext;
-
+use crate::common::status_type::ViewStatusType;
 use super::data::save_score;
 
 pub fn move_tile(
@@ -42,17 +41,14 @@ pub fn move_tile(
 pub fn update_game(
     mut board: ResMut<Board>,
     mut update_game_status: EventReader<UpdateGameStatus>,
-    mut show_score_board_event: EventWriter<ShowScoreBoard>,
-    mut toggle_score_board_event: EventWriter<ToggleScoreBoard>,
-    mut score_board_state: ResMut<ScoreBoardState>,
-    keyboard: Res<ButtonInput<KeyCode>>,
+    mut system_event: EventWriter<ChangeGameStatus>,
     mut game_context: ResMut<GameContext>,
 ) {
     for _ in update_game_status.read() {
         board.spawn_tiles();
 
         if !board.is_moveable() {
-            game_context.lifecycle = GameStatusType::GameOver;
+            
             let result = save_score(board.score as u32);
             match result {
                Ok(_) => {
@@ -63,6 +59,8 @@ pub fn update_game(
                 }
             }
             print!("Game Over!\n");
+            game_context.lifecycle = GameStatusType::GameOver;
+            system_event.send(ChangeGameStatus(ViewStatusType::Rank));
         }
     }
 }
