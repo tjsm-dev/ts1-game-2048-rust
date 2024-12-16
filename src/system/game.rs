@@ -6,6 +6,8 @@ use crate::common::direction::Direction;
 use crate::system::data::load_scores;
 use crate::system::resource::GameContext;
 
+use super::data::save_score;
+
 pub fn move_tile(
     mut board: ResMut<Board>,
     mut move_tiles: EventReader<MoveTiles>,
@@ -43,6 +45,15 @@ pub fn update_game(
         board.spawn_tiles();
 
         if !board.is_moveable() {
+            let result = save_score(board.score as u32);
+            match result {
+               Ok(_) => {
+                    print!("score updated to score board\n")
+               }
+                Err(_) => {
+                    print!("Save score failed\n")
+                }
+            }
             print!("Game Over!\n");
         }
     }
