@@ -11,6 +11,7 @@ impl Default for ViewStatusType {
     }
 }
 
+#[derive(PartialEq)]
 pub enum GameStatusType {
     Ready,
     OnGame,

@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 
+use crate::common::status_type::GameStatusType;
 use crate::component::board::Board;
 use crate::system::events::{MoveTiles, UpdateGameStatus};
 use crate::common::direction::Direction;
@@ -40,11 +41,13 @@ pub fn move_tile(
 pub fn update_game(
     mut board: ResMut<Board>,
     mut update_game_status: EventReader<UpdateGameStatus>,
+    mut game_context: ResMut<GameContext>,
 ) {
     for _ in update_game_status.read() {
         board.spawn_tiles();
 
         if !board.is_moveable() {
+            game_context.lifecycle = GameStatusType::GameOver;
             let result = save_score(board.score as u32);
             match result {
                Ok(_) => {
