@@ -1,10 +1,14 @@
 use bevy::prelude::*;
 
+use crate::common::status_type::GameStatusType;
 use crate::component::board::Board;
 use crate::system::events::{MoveTiles, UpdateGameStatus, ShowScoreBoard, ToggleScoreBoard};
 use crate::ui::score_board::ScoreBoardState;
 use crate::common::direction::Direction;
-use crate::ui::score_board::save_score;
+use crate::system::data::load_scores;
+use crate::system::resource::GameContext;
+
+use super::data::save_score;
 
 pub fn move_tile(
     mut board: ResMut<Board>,
@@ -42,23 +46,32 @@ pub fn update_game(
     mut toggle_score_board_event: EventWriter<ToggleScoreBoard>,
     mut score_board_state: ResMut<ScoreBoardState>,
     keyboard: Res<ButtonInput<KeyCode>>,
+    mut game_context: ResMut<GameContext>,
 ) {
     for _ in update_game_status.read() {
         board.spawn_tiles();
 
         if !board.is_moveable() {
-            println!("Game Over! Score: {}", board.score);
-
-            // prevent new game until new game started with esc key
-            // Save the score before showing the score board
-            if !score_board_state.visible {
-                if let Err(e) = save_score(board.score as u32) {
-                    println!("Failed to save score: {}", e);
+            game_context.lifecycle = GameStatusType::GameOver;
+            let result = save_score(board.score as u32);
+            match result {
+               Ok(_) => {
+                    print!("score updated to score board\n")
+               }
+                Err(_) => {
+                    print!("Save score failed\n")
                 }
-                show_score_board_event.send(ShowScoreBoard);
-                *board = Board::create_add_random_tiles();
-                *score_board_state = ScoreBoardState::default();
             }
+            print!("Game Over!\n");
         }
     }
+}
+
+pub fn load_game_data(
+    mut game_context: ResMut<GameContext>,
+) {
+    let mut scores = load_scores().unwrap_or_default();
+
+    scores.sort_by(|a, b| b.score.cmp(&a.score));
+    game_context.best_score = scores.first().map(|s| s.score).unwrap_or(0);
 }
