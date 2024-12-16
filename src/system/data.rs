@@ -37,7 +37,11 @@ pub fn save_score(score: u32) -> Result<(), Box<dyn std::error::Error>> {
     scores.sort_by(|a, b| b.score.cmp(&a.score));
     scores.truncate(10); // Keep only top 10 scores
 
-    let json = serde_json::to_string_pretty(&scores)?;
+    let scorelist = ScoreList {
+        scores
+    };
+
+    let json = serde_json::to_string_pretty(&scorelist)?;
     fs::write(SCORE_FILE, json)?;
 
     Ok(())
