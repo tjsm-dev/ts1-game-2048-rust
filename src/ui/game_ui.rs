@@ -188,8 +188,11 @@ pub fn sync_board_with_ui(
     mut commands: Commands,
     grid_query: Query<Entity, With<GameGrid>>,
     tile_query: Query<Entity, With<TileText>>,
-    panel_query: Query<Entity, With<ScorePanel>>,
+    score_panel_query: Query<Entity, With<ScorePanel>>,
+    best_score_panel_query: Query<Entity, With<BestScorePanel>>,
     score_query: Query<Entity, With<ScoreText>>,
+    best_score_query: Query<Entity, With<BestScoreText>>,
+    game_context: Res<GameContext>
 ) {
     // First, remove ALL existing tile texts
     for entity in tile_query.iter() {
@@ -199,9 +202,11 @@ pub fn sync_board_with_ui(
     for entity in score_query.iter() {
         commands.entity(entity).despawn_recursive();
     }
+    for entity in best_score_query.iter() {
+        commands.entity(entity).despawn_recursive();
+    }
 
-    // 점수 무한 중첩 그리기 상태
-    let panel_entity = panel_query.single();
+    let panel_entity = score_panel_query.single();
 
     commands.entity(panel_entity).with_children(|parent| {
         parent.spawn((
@@ -214,6 +219,22 @@ pub fn sync_board_with_ui(
                 },
             ),
             ScoreText,
+        ));
+    });
+
+    let best_panel_entity = best_score_panel_query.single();
+
+    commands.entity(best_panel_entity).with_children(|parent| {
+        parent.spawn((
+            TextBundle::from_section(
+                game_context.best_score.to_string(),
+                TextStyle {
+                    font_size: 30.0,
+                    color: Color::rgb(0.9, 0.9, 0.9),
+                    ..default()
+                },
+            ),
+            BestScoreText,
         ));
     });
 
