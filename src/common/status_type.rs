@@ -1,6 +1,4 @@
-// TODO: refactoring - 화면 상태 타입으로 이름 변경
 pub enum ViewStatusType {
-    MainMenu,
     Rank,
     Game,
 }

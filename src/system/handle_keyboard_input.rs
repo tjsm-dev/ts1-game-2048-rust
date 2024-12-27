@@ -34,9 +34,9 @@ pub fn handle_keyboard_input(
         }
     }
     
-    if keyboard_input.just_pressed(KeyCode::Escape) {
-        system_event.send(ChangeGameStatus(ViewStatusType::MainMenu));
-    } else if keyboard_input.just_pressed(KeyCode::KeyR) {
+    if keyboard_input.just_pressed(KeyCode::KeyR) {
         system_event.send(ChangeGameStatus(ViewStatusType::Rank));
+    } else if keyboard_input.just_pressed(KeyCode::KeyQ) {
+
     }
 }
