@@ -29,6 +29,3 @@ pub enum ScoreBoardType {
 
 #[derive(Debug, Event)]
 pub struct ShowScoreBoard;
-
-#[derive(Debug, Event)]
-pub struct ToggleScoreBoard;

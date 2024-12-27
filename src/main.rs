@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use ts1_game_2048_rust::{system, ui};
 use ts1_game_2048_rust::component::board::Board;
 use ts1_game_2048_rust::system::resource::GameContext;
-use crate::system::events::{ShowScoreBoard, ToggleScoreBoard};
+use crate::system::events::ShowScoreBoard;
 use crate::ui::score_board::{create_score_board, handle_score_board_input, ScoreBoardState};
 use ts1_game_2048_rust::ui::game_ui::{spawn_game_ui, sync_board_with_ui};
 use bevy::window::WindowResolution;
@@ -41,6 +41,5 @@ fn main() {
         .add_event::<system::events::MoveTiles>()
         .add_event::<system::events::UpdateGameStatus>()
         .add_event::<ShowScoreBoard>()
-        .add_event::<ToggleScoreBoard>()
         .run();
 }
