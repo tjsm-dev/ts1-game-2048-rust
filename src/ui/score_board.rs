@@ -1,7 +1,8 @@
 use bevy::prelude::*;
-
+use crate::common::status_type::GameStatusType;
 use crate::system::events::ShowScoreBoard;
 use crate::system::data::load_scores;
+use crate::system::resource::GameContext;
 
 #[derive(Component)]
 pub struct ScoreBoard;
@@ -17,11 +18,13 @@ pub fn create_score_board(
     mut score_board_state: ResMut<ScoreBoardState>,
     query: Query<Entity, With<ScoreBoard>>,
     mut events: EventReader<ShowScoreBoard>,
+    game_context: Res<GameContext>
 ) {
     for _ in events.read() {
-        score_board_state.visible = true;
+        score_board_state.visible = !score_board_state.visible;
         println!("Received ShowScoreBoard event");  // Debug print
-        
+
+        if (score_board_state.visible) {
         // Clear existing score board if any
         for entity in query.iter() {
             commands.entity(entity).despawn_recursive();
@@ -34,7 +37,7 @@ pub fn create_score_board(
                 return;
             }
         };
-        
+
         commands
             .spawn((
                 NodeBundle {
@@ -55,14 +58,16 @@ pub fn create_score_board(
             ))
             .with_children(|parent| {
                 // Title with game over message
-                parent.spawn(TextBundle::from_section(
-                    "Game Over!",
-                    TextStyle {
-                        font_size: 50.0,
-                        color: Color::RED,
-                        ..default()
-                    },
-                ));
+                if (game_context.lifecycle == GameStatusType::GameOver) {
+                    parent.spawn(TextBundle::from_section(
+                        "Game Over!",
+                        TextStyle {
+                            font_size: 50.0,
+                            color: Color::RED,
+                            ..default()
+                        },
+                    ));
+                }
 
                 // Spacer
                 parent.spawn(NodeBundle {
@@ -113,6 +118,12 @@ pub fn create_score_board(
                     },
                 ));
             });
+        } else {
+            // Clear existing score board if any
+            for entity in query.iter() {
+                commands.entity(entity).despawn_recursive();
+            }
+        }
     }
 }
 
