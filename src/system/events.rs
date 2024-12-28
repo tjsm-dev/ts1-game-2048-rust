@@ -22,6 +22,9 @@ impl Default for MoveTiles {
 #[derive(Debug, Event)]
 pub struct UpdateGameStatus;
 
+#[derive(Debug, Event)]
+pub struct RestartGame;
+
 pub enum ScoreBoardType {
     Current,
     HighScore,
@@ -29,6 +32,3 @@ pub enum ScoreBoardType {
 
 #[derive(Debug, Event)]
 pub struct ShowScoreBoard;
-
-#[derive(Debug, Event)]
-pub struct ToggleScoreBoard;

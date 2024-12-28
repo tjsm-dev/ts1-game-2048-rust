@@ -1,8 +1,8 @@
 use bevy::prelude::*;
-
+use bevy::utils::petgraph::matrix_graph::Zero;
 use crate::common::status_type::GameStatusType;
 use crate::component::board::Board;
-use crate::system::events::{MoveTiles, UpdateGameStatus, ChangeGameStatus};
+use crate::system::events::{MoveTiles, UpdateGameStatus, ChangeGameStatus, RestartGame};
 use crate::common::direction::Direction;
 use crate::system::data::load_scores;
 use crate::system::resource::GameContext;
@@ -58,10 +58,23 @@ pub fn update_game(
                     print!("Save score failed\n")
                 }
             }
-            print!("Game Over!\n");
             game_context.lifecycle = GameStatusType::GameOver;
             system_event.send(ChangeGameStatus(ViewStatusType::Rank));
         }
+    }
+}
+
+pub fn restart_game(
+    mut board: ResMut<Board>,
+    mut restart_event: EventReader<RestartGame>,
+    mut system_event: EventWriter<ChangeGameStatus>,
+    mut game_context: ResMut<GameContext>,
+) {
+    if !restart_event.read().count().is_zero() {
+        *board = Board::create_add_random_tiles();
+        game_context.lifecycle = GameStatusType::OnGame;
+        system_event.send(ChangeGameStatus(ViewStatusType::Game));
+        load_game_data(game_context);
     }
 }
 
